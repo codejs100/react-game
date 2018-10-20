@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game with Javascript</title>
+    <style>
+        .board {
+            display: flex;
+            width: 600px;
+            height: 600px;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .square {
+            height: 200px;
+            width: 200px;
+            box-sizing: border-box;
+            border: 5px solid black;
+            font-size: 5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .square:hover {
+            cursor: pointer;
+            background-color: #80cd92;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+    </div>
+    <script>
+        let gameState = {
+            FIRST_PLAYER_SYMBOL: "X",
+            SECOND_PLAYER_SYMBOL: "0",
+            currentPlayer: "X",
+            board: ["", "", "", "", "", "", "", "", ""]
+        }
+
+        function render(state) {
+            document.querySelector('.container').innerHTML = `<div class="board">
+            <div class="square" data-square-id="0">${state.board[0]}</div>
+            <div class="square" data-square-id="1">${state.board[1]}</div>
+            <div class="square" data-square-id="2">${state.board[2]}</div>
+            <div class="square" data-square-id="3">${state.board[3]}</div>
+            <div class="square" data-square-id="4">${state.board[4]}</div>
+            <div class="square" data-square-id="5">${state.board[5]}</div>
+            <div class="square" data-square-id="6">${state.board[6]}</div>
+            <div class="square" data-square-id="7">${state.board[7]}</div>
+            <div class="square" data-square-id="8">${state.board[8]}</div>
+        </div>`;
+        }
+
+        render(gameState.board);
+
+        board.addEventListener('click', function (event) {
+            const index = parseInt(event.target.dataset['squareId'], 10);
+            gameState.board[index] = gameState.currentPlayer;
+            render(gameState.board);
+            if (checkWinner()) {
+                alert(gameState.currentPlayer + ' is the winner');
+                return;
+            }
+            gameState.currentPlayer = (gameState.currentPlayer === gameState.FIRST_PLAYER_SYMBOL) ? gameState.SECOND_PLAYER_SYMBOL : gameState.FIRST_PLAYER_SYMBOL;
+        });
+
+        function checkWinner() {
+            const symbols = gameState.board;
+            const winingCombo = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [3, 5, 8], [0, 4, 8], [2, 4, 6]];
+
+            return winingCombo.find(function (combo) {
+                if (symbols[combo[0]] == symbols[combo[1]] && symbols[combo[1]] == symbols[combo[2]]) {
+                    return symbols[combo[0]];
+                } else {
+                    return false;
+                }
+            });
+
+        }
+
+
+        /*
+
+        const FIRST_PLAYER_SYMBOL = "X";
+        const SECOND_PLAYER_SYMBOL = "O";
+        let currentPlayer = FIRST_PLAYER_SYMBOL;
+
+        const board = document.querySelector(".board");
+
+        board.addEventListener('click', function (event) {
+            event.target.innerHTML = currentPlayer;
+            if (checkWinner()) {
+                alert(currentPlayer + ' is the winner');
+                return;
+            }
+            currentPlayer = (currentPlayer === FIRST_PLAYER_SYMBOL) ? SECOND_PLAYER_SYMBOL : FIRST_PLAYER_SYMBOL;
+        });
+
+        function checkWinner() {
+            const square = Array.prototype.slice.call(document.querySelectorAll('.square'));
+            const symbols = square.map(function (item) {
+                return item.innerHTML;
+            });
+
+            const winingCombo = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [3, 5, 8], [0, 4, 8], [2, 4, 6]];
+
+            return winingCombo.find(function (combo) {
+                if (symbols[combo[0]] == symbols[combo[1]] && symbols[combo[1]] == symbols[combo[2]]) {
+                    return symbols[combo[0]];
+                } else {
+                    return false;
+                }
+            });
+
+        }
+        */
+    </script>
+</body>
+
+</html>
